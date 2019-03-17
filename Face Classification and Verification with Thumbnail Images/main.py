@@ -1,8 +1,8 @@
 import torch
 import glob
 
-from hw2p2 import data, classification_routine, verification_routine,config, paths
-from hw2p2.models import ShuffleNetV2
+import data, classification_routine, verification_routine,config, paths
+from models import ShuffleNetV2
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
