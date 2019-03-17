@@ -2,7 +2,7 @@ import torch
 from torch import nn
 from torch.autograd import Variable
 
-from hw2p2 import config
+import config
 
 def init_weights(self):
     for m in self.modules():
