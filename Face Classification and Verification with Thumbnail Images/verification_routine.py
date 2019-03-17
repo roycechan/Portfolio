@@ -3,7 +3,7 @@ import torch
 from torch.utils import data
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
-from hw2p2 import paths
+import paths
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
