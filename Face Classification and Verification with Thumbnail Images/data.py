@@ -1,5 +1,4 @@
 import os
-
 import torch
 import torchvision
 from PIL import Image
@@ -7,7 +6,7 @@ from torch.autograd import Variable
 from torch.utils.data import Dataset
 from torchvision.transforms import transforms
 
-from hw2p2 import paths, config
+import paths, config
 
 ### Classification ###
 train_transformations = transforms.Compose([
