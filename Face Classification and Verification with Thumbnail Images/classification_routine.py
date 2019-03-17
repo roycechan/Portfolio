@@ -4,7 +4,7 @@ import torch
 import torch.nn.functional as F
 import pandas as pd
 import numpy as np
-from hw2p2 import config, utils, data, paths
+import config, utils, data, paths
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 criterion_label = nn.CrossEntropyLoss()
