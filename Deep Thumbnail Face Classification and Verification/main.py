@@ -29,7 +29,7 @@ def run_classification():
 
     classification_routine.train(network, train_dataloader_class, val_dataloader_class, last_checkpoint = last_checkpoint)
 
-    test_dataset = data.ClassificationTestDataset(paths.test_data_verify)
+    test_dataset = data.ClassificationTestDataset(paths.test_data_class)
     test_output = classification_routine.predict(network, test_dataset)
     print(test_output)
 
