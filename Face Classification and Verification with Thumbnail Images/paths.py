@@ -1,5 +1,5 @@
 # Data
-data_prefix = "hw2p2_check/"
+data_prefix = "data/"
 train_data_medium = data_prefix + "train_data/medium/"
 train_data_large = data_prefix + "train_data/large/"
 
