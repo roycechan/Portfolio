@@ -1,5 +1,5 @@
 import torch
-from hw2p2 import paths
+import paths
 
 def save_checkpoint(model, current_epoch):
     """Save checkpoint if a new best is achieved"""
