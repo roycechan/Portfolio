@@ -123,21 +123,13 @@ class ShuffleNetV2(nn.Module):
 
     def forward(self, x):
         out = self.conv1(x)
-        print("Conv1", out.size())
         out = self.stage2(out)
-        print("stage2", out.size())
         out = self.stage3(out)
-        print("stage3", out.size())
         # out = self.stage4(out)
-        # print("stage4", out.size())
         out = self.conv5(out)
-        print("conv5", out.size())
         out = self.global_pool(out)
-        print("global_pool", out.size())
         out = out.view(out.size(0), -1)  # flatten
-        print("flatten", out.size())
         out = self.fc(out)
-        print("fc", out.size())
         return out
 
 
