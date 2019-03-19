@@ -60,7 +60,7 @@ Hence, the following changes were made to the original architecture:
 Training and validation sets are loaded with ImageFolder
 
     train_dataset = torchvision.datasets.ImageFolder(root=paths.train_data_medium,
-												    transform=train_transformations)
+						    transform=train_transformations)
 #### ShuffleNetV2
 ##### Basic block
 
