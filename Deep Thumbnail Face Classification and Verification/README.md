@@ -75,15 +75,15 @@ Training and validation sets are loaded with ImageFolder
 	  
 		  in_channels = int(in_channels / self.splits)  
 		  self.right = nn.Sequential(*[  
-						  nn.Conv2d(in_channels, in_channels, kernel_size=1, stride=1, bias=False),  
-						  nn.BatchNorm2d(in_channels),  
-						  nn.ReLU(inplace=True),  
-						  nn.Conv2d(in_channels, in_channels, kernel_size=3, stride=1, padding=1, bias=False, groups=in_channels),  
-						  nn.BatchNorm2d(in_channels),  
-						  nn.Conv2d(in_channels, in_channels, kernel_size=1, stride=1, bias=False),  
-						  nn.BatchNorm2d(in_channels),  
-						  nn.ReLU(inplace=True)  
-						 ])  
+				  nn.Conv2d(in_channels, in_channels, kernel_size=1, stride=1, bias=False),  
+				  nn.BatchNorm2d(in_channels),  
+				  nn.ReLU(inplace=True),  
+				  nn.Conv2d(in_channels, in_channels, kernel_size=3, stride=1, padding=1, bias=False, groups=in_channels),  
+				  nn.BatchNorm2d(in_channels),  
+				  nn.Conv2d(in_channels, in_channels, kernel_size=1, stride=1, bias=False),  
+				  nn.BatchNorm2d(in_channels),  
+				  nn.ReLU(inplace=True)  
+				 ])  
 		  init_weights(self)  
 	  
 	  def forward(self, x):  
@@ -104,22 +104,22 @@ Training and validation sets are loaded with ImageFolder
 		  self.groups = groups  
 		  
 		  self.left = nn.Sequential(*[  
-					  nn.Conv2d(self.in_channels, self.in_channels, kernel_size=3, stride=2, bias=False, groups=self.in_channels),  
-					  nn.BatchNorm2d(self.in_channels),  
-					  nn.Conv2d(self.in_channels, self.out_channels // 2, kernel_size=1, stride=1, bias=False),  
-					  nn.BatchNorm2d(self.out_channels // 2),  
-					  nn.ReLU(inplace=True)  
-					 ])  
-		  self.right = nn.Sequential(*[  
-					  nn.Conv2d(self.in_channels, self.in_channels, kernel_size=1, stride=1, bias=False),  
-					  nn.BatchNorm2d(self.in_channels),  
-					  nn.ReLU(inplace=True),  
-					  nn.Conv2d(self.in_channels, self.in_channels, kernel_size=3, stride=2, bias=False, groups=self.in_channels),  
-					  nn.BatchNorm2d(self.in_channels),  
-					  nn.Conv2d(self.in_channels, self.out_channels // 2, kernel_size=1, stride=1, bias=False),  
-					  nn.BatchNorm2d(self.out_channels // 2),  
-					  nn.ReLU(inplace=True)  
-					 ])  
+				  nn.Conv2d(self.in_channels, self.in_channels, kernel_size=3, stride=2, bias=False, groups=self.in_channels),  
+				  nn.BatchNorm2d(self.in_channels),  
+				  nn.Conv2d(self.in_channels, self.out_channels // 2, kernel_size=1, stride=1, bias=False),  
+				  nn.BatchNorm2d(self.out_channels // 2),  
+				  nn.ReLU(inplace=True)  
+				 ])  
+	  self.right = nn.Sequential(*[  
+				  nn.Conv2d(self.in_channels, self.in_channels, kernel_size=1, stride=1, bias=False),  
+				  nn.BatchNorm2d(self.in_channels),  
+				  nn.ReLU(inplace=True),  
+				  nn.Conv2d(self.in_channels, self.in_channels, kernel_size=3, stride=2, bias=False, groups=self.in_channels),  
+				  nn.BatchNorm2d(self.in_channels),  
+				  nn.Conv2d(self.in_channels, self.out_channels // 2, kernel_size=1, stride=1, bias=False),  
+				  nn.BatchNorm2d(self.out_channels // 2),  
+				  nn.ReLU(inplace=True)  
+				 ])  
 		  init_weights(self)  
 	  
 	  def forward(self, x):  
