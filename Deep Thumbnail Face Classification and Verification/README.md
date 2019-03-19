@@ -156,17 +156,76 @@ Forward pass is straight-forward. Note that we removed *maxpool* and *stage4* in
 **Test Classification Accuracy: 78.23%**
 ## Face Verification
 ### Introduction
-An input to your system is a trial, that is, a pair of face images that may or may not belong to the same person. Given a trial, your goal is to output a numeric score that quantifies how similar the images of the two people appear to be. On some scale, a higher score will indicate higher confidence that the two images belong to one and the same person in fact.
+In this task, we are given pairs of face images that may or may not belong to the same person. Given a trial, our objective is to output a numeric score that quantifies how similar the images of the two people appear to be. On some scale, a higher score will indicate higher confidence that the two images belong to one and the same person in fact.
 
 ![](https://github.com/roycechan/Portfolio/blob/master/Deep%20Thumbnail%20Face%20Classification%20and%20Verification/resources/verification_example.jpg)
 
+### Approach
+Using the pre-trained CNN from the classification task, we can utilize the activations of the second to last fully-connected layer as a feature embedding. Thereafter, we can estimate the similarity between two face images using the inverse distance between their embeddings. 
 ### Objectives
 Evaluation metric: **AUC score**
 ### Code walkthrough
 #### Data loading
+We customize our own data loader to take advantage of mini-batch processing. 
+
+    class VerificationTestDataset(Dataset):  
+	  def __init__(self, path):  
+		  self.path = path  
+		  self.file_list = [i for i in glob.glob(path + '*')]  
+	  
+	  def __len__(self):  
+		  return len(self.file_list)  
+	  
+	  def __getitem__(self, index):  
+		  img = Image.open(self.file_list[index])  
+		  img = torchvision.transforms.ToTensor()(img)  
+		  img = Variable(img)  
+		  idx = int(re.split('/|\.', self.file_list[index])[2]) # get file name as index  
+		  return img, idx
 #### Retrieve embeddings
+For the purpose of compute efficiency, instead of passing a pair of images through the network for each trial, we will pass batches of images through the network, and store their ids and embeddings separately in a python dictionary, to be extracted for testing later. 
+
+    def get_embedding(model, data_loader):  
+	  params = {'batch_size': 256,  
+	  'shuffle': False,  
+	  'num_workers': 16}  
+	  
+	  with torch.no_grad():  
+		  model.train()  
+		  model.to(device)  
+		  model = torch.nn.DataParallel(model)  
+		  training_generator = data.DataLoader(data_loader, **params)  
+		  
+		  embeddings = []  
+		  for batch_num, (img, idx) in enumerate(training_generator):  
+			  img = img.to(device)  
+			  output = model(img)  
+			  output = output.cpu()  
+			  embeddings.append(output)  
+	  
+		  return embeddings
 #### Calculate similarity
+We use cosine similarity. Mathematically, it measures the cosine of the angle between two vectors projected in a multi-dimensional space.
+![](https://github.com/roycechan/Portfolio/blob/master/Deep%20Thumbnail%20Face%20Classification%20and%20Verification/resources/cosine-similarity.png)
+	
+    def predict(embeddings, idx_list, test_labels):  
+	  embeddings_np = np.vstack(np.array([emb.numpy() for emb in embeddings]))  
+	  
+	  embedding_dict = {}  
+	  for idx, i in enumerate(idx_list):  
+		  embedding_dict[i] = embeddings_np[idx]  
+	  
+	  scores = []  
+	  
+	  for row in range(len(test_labels)):  
+		  a, b = test_labels[row]  
+		  a_embedding = embedding_dict[a].reshape(1, -1)  
+		  b_embedding = embedding_dict[b].reshape(1, -1)  
+		  score = cosine_similarity(a_embedding, b_embedding)  
+	  scores.append(score)
+
 ### Results
+**AUC Score: 94.65**
 ## References
 1. http://openaccess.thecvf.com/content_cvpr_2018/papers/Zhang_ShuffleNet_An_Extremely_CVPR_2018_paper.pdf
 2. https://arxiv.org/pdf/1807.11164.pdf
